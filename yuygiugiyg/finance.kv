@@ -1,0 +1,329 @@
+ScreenManager:
+    StandardLoginScreen:
+    CreateAccountScreen:
+    HomeScreen:
+    AddTransactionScreen:
+    HistoryScreen:
+    ShoppingCartScreen:
+    EditTagsScreen:
+    SettingsScreen:
+    BudgetScreen:
+    ReportsScreen:
+
+<StandardLoginScreen>:
+    name: "standard_login"
+    BoxLayout:
+        orientation: "vertical"
+        padding: 20
+        spacing: 20
+        TextInput:
+            id: account_input
+            hint_text: "Account Name"
+            multiline: False
+        TextInput:
+            id: password_input
+            hint_text: "Password"
+            password: True
+            multiline: False
+        Button:
+            text: "Login"
+            on_release: root.login()
+        Button:
+            text: "Create Account"
+            on_release: app.root.current = "create_account"
+
+<CreateAccountScreen>:
+    name: "create_account"
+    BoxLayout:
+        orientation: "vertical"
+        padding: 20
+        spacing: 20
+        TextInput:
+            id: new_account_name
+            hint_text: "New Account Name"
+            multiline: False
+        TextInput:
+            id: new_account_balance
+            hint_text: "Initial Balance"
+            input_filter: "float"
+            multiline: False
+        TextInput:
+            id: new_account_password
+            hint_text: "Password"
+            password: True
+            multiline: False
+        Button:
+            text: "Create Account"
+            on_release: root.create_account()
+        Button:
+            text: "Back to Login"
+            on_release: app.root.current = "standard_login"
+
+<HomeScreen>:
+    name: "home"
+    BoxLayout:
+        orientation: "vertical"
+        padding: 10
+        spacing: 10
+        Label:
+            id: balance_label
+            font_size: 20
+        GridLayout:
+            cols: 3
+            spacing: 5
+            size_hint_y: None
+            height: "140dp"
+            Button:
+                text: "Add Transaction"
+                on_release: app.root.current = "add_transaction"
+            Button:
+                text: "View Transactions"
+                on_release: app.root.current = "history"
+            Button:
+                text: "Shopping Cart"
+                on_release: app.root.current = "shopping_cart"
+            Button:
+                text: "Budgeting"
+                on_release: app.root.current = "budget"
+            Button:
+                text: "Reports"
+                on_release: app.root.current = "reports"
+            Button:
+                text: "Settings"
+                on_release: app.root.current = "settings"
+            Button:
+                text: "Logout"
+                on_release: app.logout()
+
+<AddTransactionScreen>:
+    name: "add_transaction"
+    BoxLayout:
+        orientation: "vertical"
+        padding: 20
+        spacing: 10
+        TextInput:
+            id: amount
+            hint_text: "Amount"
+            input_filter: "float"
+            multiline: False
+        Label:
+            id: preset_label
+            text: "Preset: None"
+            size_hint_y: None
+            height: "30dp"
+        BoxLayout:
+            id: preset_tags_box
+            orientation: "horizontal"
+            size_hint_y: None
+            height: "40dp"
+        TextInput:
+            id: specs
+            hint_text: "Specifications (optional)"
+            multiline: False
+        BoxLayout:
+            orientation: "horizontal"
+            size_hint_y: None
+            height: "40dp"
+            Button:
+                text: "Add Income"
+                on_release: root.save_transaction(amount.text, specs.text, "gain")
+            Button:
+                text: "Add Expense"
+                on_release: root.save_transaction(amount.text, specs.text, "expense")
+        Button:
+            text: "Back"
+            size_hint_y: None
+            height: "40dp"
+            on_release: app.root.current = "home"
+
+<HistoryScreen>:
+    name: "history"
+    BoxLayout:
+        orientation: "vertical"
+        padding: 20
+        spacing: 10
+        BoxLayout:
+            orientation: "horizontal"
+            size_hint_y: 0.9
+            ScrollView:
+                size_hint_x: 0.5
+                BoxLayout:
+                    id: incomes_container
+                    orientation: "vertical"
+                    size_hint_y: None
+                    height: self.minimum_height
+            ScrollView:
+                size_hint_x: 0.5
+                BoxLayout:
+                    id: expenses_container
+                    orientation: "vertical"
+                    size_hint_y: None
+                    height: self.minimum_height
+        Button:
+            text: "Back"
+            size_hint_y: 0.1
+            on_release: app.root.current = "home"
+
+<ShoppingCartScreen>:
+    name: "shopping_cart"
+    BoxLayout:
+        orientation: "vertical"
+        padding: 20
+        spacing: 10
+        BoxLayout:
+            orientation: "horizontal"
+            size_hint_y: None
+            height: "40dp"
+            TextInput:
+                id: item_name
+                hint_text: "Item Name"
+                multiline: False
+            TextInput:
+                id: item_cost
+                hint_text: "Cost"
+                input_filter: "float"
+                multiline: False
+            Button:
+                text: "Add"
+                on_release: root.add_item(item_name.text, item_cost.text)
+        ScrollView:
+            BoxLayout:
+                id: shopping_items_container
+                orientation: "vertical"
+                size_hint_y: None
+                height: self.minimum_height
+        Label:
+            id: total_price
+            text: "Total: $0"
+            size_hint_y: None
+            height: "40dp"
+        Button:
+            text: "Back"
+            size_hint_y: None
+            height: "40dp"
+            on_release: app.root.current = "home"
+
+<EditTagsScreen>:
+    name: "edit_tags"
+    BoxLayout:
+        orientation: "vertical"
+        padding: 20
+        spacing: 10
+        TextInput:
+            id: new_tag_input
+            hint_text: "Enter new tag"
+            multiline: False
+        Button:
+            text: "Add Tag"
+            size_hint_y: None
+            height: "40dp"
+            on_release: root.add_new_tag(new_tag_input.text)
+        ScrollView:
+            BoxLayout:
+                id: tags_container
+                orientation: "vertical"
+                size_hint_y: None
+                height: self.minimum_height
+        Button:
+            text: "Back"
+            size_hint_y: None
+            height: "40dp"
+            on_release: app.root.current = "add_transaction"
+
+<SettingsScreen>:
+    name: "settings"
+    BoxLayout:
+        orientation: "vertical"
+        padding: 20
+        spacing: 10
+        TextInput:
+            id: new_password_input
+            hint_text: "New Password"
+            password: True
+            multiline: False
+        Button:
+            text: "Change Password"
+            size_hint_y: None
+            height: "40dp"
+            on_release: root.change_password()
+        Button:
+            text: "Delete Account"
+            size_hint_y: None
+            height: "40dp"
+            on_release: root.delete_account()
+        Button:
+            text: "Exit Account"
+            size_hint_y: None
+            height: "40dp"
+            on_release: root.logout()
+        Button:
+            text: "Back"
+            size_hint_y: None
+            height: "40dp"
+            on_release: app.root.current = "home"
+
+<BudgetScreen>:
+    name: "budget"
+    BoxLayout:
+        orientation: "vertical"
+        padding: 20
+        spacing: 10
+        Label:
+            id: budget_info
+            text: "Budget info will be shown here."
+            font_size: 20
+        TextInput:
+            id: new_budget_input
+            hint_text: "Set/Change Budget Limit"
+            input_filter: "float"
+            multiline: False
+        Button:
+            text: "Set Budget"
+            size_hint_y: None
+            height: "40dp"
+            on_release: root.set_new_budget()
+        Button:
+            text: "Back"
+            size_hint_y: None
+            height: "40dp"
+            on_release: app.root.current = "home"
+
+<ReportsScreen>:
+    name: "reports"
+    BoxLayout:
+        orientation: "vertical"
+        padding: 10
+        spacing: 10
+        BoxLayout:
+            orientation: "horizontal"
+            size_hint_y: None
+            height: "40dp"
+            TextInput:
+                id: start_date
+                hint_text: "Start Date (YYYY-MM-DD)"
+                multiline: False
+            TextInput:
+                id: end_date
+                hint_text: "End Date (YYYY-MM-DD)"
+                multiline: False
+            Spinner:
+                id: category_spinner
+                text: "All Categories"
+                values: []
+            Button:
+                text: "Generate Report"
+                size_hint_x: None
+                width: "120dp"
+                on_release: root.generate_report()
+        ScrollView:
+            id: reports_scroll
+            GridLayout:
+                id: reports_grid
+                cols: 1
+                size_hint_y: None
+                height: self.minimum_height
+        Button:
+            text: "Back"
+            size_hint_y: None
+            height: "40dp"
+            on_release: app.root.current = "home"
