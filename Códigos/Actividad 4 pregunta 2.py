@@ -1,6 +1,5 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
 
 u = np.linspace(0, 2 * np.pi, 50)
 v = np.linspace(0, np.pi, 50)
@@ -20,3 +19,5 @@ ax.set_zlabel('Z')
 ax.set_title('x² + y² + z² = 1')
 ax.set_box_aspect([1, 1, 1])
 plt.show()
+
+#Usando curvas parametrica que encontre en Wikipedia porque no tengo idea de como hacerlo de otra manera
